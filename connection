@@ -1,20 +1,32 @@
-navigator.bluetooth.requestDevice(options) //デバイスのスキャンを開始
-  .then(device => {
-    console.log("デバイスを取得しました", device);    
-    return device.gatt.connect();
-  })
-  .then(server =>{
-    console.log("GATTサーバーに接続しました", server);
-    return server.getPrimaryService(LED_SERVICE_UUID);
-  })
-  .then(service => {
-    console.log("サービスを取得しました", service);
-    return service.getCharacteristic(LED_TEXT_CHARACTERISTIC_UUID);
-  })
-  .then(chara => {
-    console.log("キャラクタリスティックを取得しました", chara);
-    chara.writeValue(value);  //値を書き込む
-  })  
-  .catch(error => {
-    console.log(error);
-  });
+SF,1
+R,1
+SS,00000001
+SR,00000000
+R,1
+PZ
+PS,123456789012345678901234567890FF
+PC,12345678901234567890123456789011,12,01
+PC,12345678901234567890123456789022,04,01
+
+R,1
+LS// 各キャラクタリスティックのハンドルを記録すること。
+
+@PW_ON
+|O,04,00
+|O,04,%000E
+A
+
+@CONN
+SM,1,000F4240
+
+@TMR1
+$VAR1 = |I,02
+SHW,000B,$VAR1
+SM,1,000F4240
+
+@DISCON
+A
+
+<ESC>
+SS,01000000
+R,1
